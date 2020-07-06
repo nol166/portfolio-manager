@@ -4,6 +4,8 @@ interface profileData {
     // stuff
 }
 
-const printProfile = profileDataArr => {
+const printProfile = (profileDataArr: string[]) => {
     profileDataArr.forEach(profileItem => console.log(profileItem))
 }
+
+printProfile(profileDataArgs)
