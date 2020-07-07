@@ -1,10 +1,8 @@
 import { writeFile } from 'fs'
-import { generatePage } from './src/page-template'
+import { templateData as generatePage } from './src/page-template'
 import { prompt } from 'inquirer'
 import { userQuestions } from './src/userQuestions'
 import { projectQuesions } from './src/projectQuestions'
-const profileDataArgs = process.argv.slice(2, process.argv.length)
-const [userName, github] = profileDataArgs
 
 const promptUser = () => {
     return prompt(userQuestions)
@@ -34,5 +32,11 @@ const promptProject = (portfolioData: { projects: any[] }) => {
 promptUser()
     .then(promptProject)
     .then((portfolioData: any) => {
-        console.log(portfolioData)
+        const pageHTML = generatePage(portfolioData)
+        writeFile('./index.html', pageHTML, err => {
+            if (err) throw new Error()
+            console.log(
+                'Page created! Check out index.html in this directory to see it!'
+            )
+        })
     })
