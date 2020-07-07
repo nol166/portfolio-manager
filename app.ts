@@ -1,6 +1,6 @@
-import { writeFile } from 'fs'
 import { templateData as generatePage } from './src/page-template'
 import { prompt } from 'inquirer'
+import { makeFile, copyStyle } from './utils/generateSite'
 import { userQuestions } from './src/userQuestions'
 import { projectQuesions } from './src/projectQuestions'
 
@@ -31,11 +31,18 @@ const promptProject = (portfolioData: { projects: any[] }) => {
 promptUser()
     .then(promptProject)
     .then((portfolioData: any) => {
-        const pageHTML = generatePage(portfolioData)
-        writeFile('./index.html', pageHTML, err => {
-            if (err) throw new Error()
-            console.log(
-                'Page created! Check out index.html in this directory to see it!'
-            )
-        })
+        return generatePage(portfolioData)
+    })
+    .then(pageHTML => {
+        return makeFile(pageHTML)
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse)
+        return copyStyle()
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse)
+    })
+    .catch(err => {
+        console.log(err)
     })
