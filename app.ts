@@ -20,11 +20,10 @@ const promptProject = (portfolioData: { projects: any[] }) => {
     return prompt(projectQuesions).then(
         (projectData: { confirmAddProject: boolean }) => {
             portfolioData.projects.push(projectData)
-            if (projectData.confirmAddProject) {
-                return promptProject(portfolioData)
-            } else {
-                return portfolioData
-            }
+            let result = projectData.confirmAddProject
+                ? promptProject(portfolioData)
+                : portfolioData
+            return result
         }
     )
 }
